@@ -3,7 +3,7 @@ const server = require('./api/server')
 const db = require('./data/db-config')
 const cars = [
   {
-    vin: '11111111111111111',
+    vin: '5YJ3E1EA7HF000337',
     make: 'toyota',
     model: 'prius',
     mileage: 250000,
@@ -11,7 +11,7 @@ const cars = [
     transmission: 'CVT',
   },
   {
-    vin: '22222222222222222',
+    vin: '1GKS2CKJ1FR643265',
     make: 'ford',
     model: 'mustang',
     mileage: 120000,
@@ -19,7 +19,7 @@ const cars = [
     transmission: 'manual',
   },
   {
-    vin: '33333333333333333',
+    vin: '1HGBH41JXMN109186',
     make: 'honda',
     model: 'accord',
     mileage: 220000,
@@ -90,9 +90,9 @@ describe('server.js', () => {
       const res1 = await request(server).post('/api/cars').send(cars[0])
       const res2 = await request(server).post('/api/cars').send(cars[1])
       const res3 = await request(server).post('/api/cars').send(cars[2])
-      expect(res1.body).toMatchObject({ id: 1, ...cars[0] })
-      expect(res2.body).toMatchObject({ id: 2, ...cars[1] })
-      expect(res3.body).toMatchObject({ id: 3, ...cars[2] })
+      expect(res1.body).toMatchObject({ car_id: 1, ...cars[0] })
+      expect(res2.body).toMatchObject({ car_id: 2, ...cars[1] })
+      expect(res3.body).toMatchObject({ car_id: 3, ...cars[2] })
     }, 750)
     test('[7] responds with a 400 and proper error on missing vin', async () => {
       const { vin, ...badCar } = cars[0] // eslint-disable-line
@@ -127,7 +127,7 @@ describe('server.js', () => {
     test('[12] responds with a 400 and proper error on non-unique vin', async () => {
       await request(server).post('/api/cars').send(cars[0])
       const res = await request(server).post('/api/cars').send(cars[0])
-      expect(res.body).toHaveProperty('message', 'vin 11111111111111111 already exists')
+      expect(res.body).toHaveProperty('message', 'vin 5YJ3E1EA7HF000337 already exists')
     }, 750)
   })
 })
