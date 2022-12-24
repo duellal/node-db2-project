@@ -1,12 +1,4 @@
-const knex = require('knex')
-
-const db = knex({
-  client: 'sqlite3',
-  connection: {
-    filename: './data/dealer.db3'
-  },
-  useNullasDefault: true
-})
+const db = require(`../../data/db-config`)
 
 const getAll = () => {
   return db('cars')
@@ -21,8 +13,23 @@ const create = async (car) => {
   return getById(id)
 }
 
+const update = async (id, car) => {
+  await db('cars').update(car).where('car_id', id)
+  const updatedCar = await getById(id)
+  return updatedCar
+}
+
+const removeById = async (id) => {
+  const deletedCar = await getById(id)
+  await db('cars').del().where('car_id', id)
+  return deletedCar
+}
+
+
 module.exports = {
   getAll,
   getById,
-  create
+  create,
+  update,
+  removeById
 }
